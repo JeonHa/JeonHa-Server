@@ -3,10 +3,9 @@ const { jwtConfig } = require('../../config/env/development')
 const { response, errResponse } = require('../library/response')
 const returnCode = require('../library/returnCode')
 
-function sign(info) {
+function sign(idx) {
     const payload = {
-        'id': info.id,
-        'type': info.type,
+        'idx': idx
     }
 
     const token = jwt.sign(payload, jwtConfig.secretKey, jwtConfig.option);

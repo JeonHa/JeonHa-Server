@@ -26,7 +26,7 @@ async function getIdCheck(req, res) {
         }
     } catch (error) {
         console.log(error.message);
-        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '아이디 확인 에러')
+        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '아이디 중복 확인 에러')
     }
 }
 

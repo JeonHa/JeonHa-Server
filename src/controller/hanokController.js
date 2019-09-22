@@ -61,6 +61,16 @@ async function tokenGenerator(req, res) {
     response(res, returnCode.OK, '토큰 발급 성공', tokenData);
 } 
 
+//테스트용 한옥 예약 삭제
+async function hanokReservationDelete(req, res) {
+    await hanokService.hanokReservationDelete(req.params.userIdx, req.params.hanokIdx);
+    response(res, returnCode.OK, '한옥 예약 삭제');
+}
+
 module.exports = {
-    getHanokMapList, getHanokDetail, postHanokReservation, tokenGenerator 
+    getHanokMapList, 
+    getHanokDetail, 
+    postHanokReservation, 
+    tokenGenerator, 
+    hanokReservationDelete
 }

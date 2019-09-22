@@ -61,10 +61,20 @@ async function postHanokReservation(hanokIdx, userIdx) {
     }
 }
 
+//테스트용 예약 삭제
+async function hanokReservationDelete(userIdx, hanokIdx) {
+    let hanokJson = {
+        userIdx: Number(userIdx),
+        hanokIdx: Number(hanokIdx)
+    }
+    await hanokDao.hanokReservationDelete(hanokJson);
+}
+
 
 module.exports = {
     getHanokMap,
     getHanokList,
     getHanokDetail,
-    postHanokReservation
+    postHanokReservation,
+    hanokReservationDelete
 }

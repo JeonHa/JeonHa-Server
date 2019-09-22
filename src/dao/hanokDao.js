@@ -32,9 +32,14 @@ async function postHanokReservation(reserveJson) {
 }
 
 async function selectHanokReservation(reserveJson) {
-    console.log(reserveJson);
     const selectSql = `SELECT * FROM hanok_reservation WHERE userIdx = ? AND hanokIdx = ?`
     return await mysql.query(selectSql, [reserveJson.userIdx, reserveJson.hanokIdx]);
+}
+
+//테스트용 예약 삭제
+async function hanokReservationDelete(reserveJson) {
+    const deleteSql = `DELETE FROM hanok_reservation WHERE userIdx = ? AND hanokIdx = ?`;
+    return await mysql.query(deleteSql, [reserveJson.userIdx, reserveJson.hanokIdx]);
 }
 
 module.exports = {
@@ -44,5 +49,6 @@ module.exports = {
     selectHanok,
     selectHanokImage,
     postHanokReservation,
-    selectHanokReservation
+    selectHanokReservation,
+    hanokReservationDelete
 }

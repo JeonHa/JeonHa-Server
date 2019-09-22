@@ -14,7 +14,6 @@ async function getHanokMapList(req, res) {
             const hanokList = await hanokService.getHanokList(sortType);
             response(res, returnCode.OK, '한옥 리스트 성공', hanokList);
         } else {
-            console.log(error.message);
             errResponse(res, returnCode.BAD_REQUEST, 'URL 쿼리 오류');
         }
     } catch (error) {
@@ -36,10 +35,10 @@ async function getHanokDetail(req, res) {
 
 async function postHanokReservation(req, res) {
     try {
+        let decode = verify(req.headers.authorization);
         if (decode == -2) {
             errResponse(res, returnCode.NOT_FOUND, '토큰 값 오류');
         } else {
-            let decode = verify(req.headers.authorization);
             const userIdx = decode.idx;
             const hanokIdx = req.params.hanokIdx;
             const hanokResponse = await hanokService.postHanokReservation(hanokIdx, userIdx);

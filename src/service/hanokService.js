@@ -18,8 +18,8 @@ async function getHanokList(sortType) {
     await allHanok.map(data => {
         let hanokList = data;
         for (let i = 0; i < allHanokImage.length; i++) {
-            if (data.hanokIdx == image.hanokIdx) {
-                hanokList.img = image.img;
+            if (data.hanokIdx == allHanokImage[i].hanokIdx) {
+                hanokList.img = allHanokImage[i].img;
                 break;
             }
         }

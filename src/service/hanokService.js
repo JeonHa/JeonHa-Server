@@ -47,15 +47,13 @@ async function getHanokDetail(hanokIdx) {
 }
 
 async function postHanokReservation(hanokIdx, userIdx) {
-    console.log(userIdx);
     let hanokJson = {
         userIdx: Number(userIdx),
         hanokIdx: Number(hanokIdx),
         state: true
     }
     const checkExistReserve = await hanokDao.selectHanokReservation(hanokJson);
-
-    if (checkExistReserve) {
+    if (checkExistReserve[0]) {
         return false;
     } else {
         await hanokDao.postHanokReservation(hanokJson);

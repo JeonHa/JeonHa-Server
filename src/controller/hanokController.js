@@ -1,6 +1,6 @@
 const { response, errResponse } = require('../library/response')
+const { sign, verify } = require('../library/jwt');
 const returnCode = require('../library/returnCode')
-
 const hanokService = require('../service/hanokService');
 
 async function getHanokMapList(req, res) {
@@ -36,16 +36,32 @@ async function getHanokDetail(req, res) {
 
 async function postHanokReservation(req, res) {
     try {
-        const userIdx = req.headers.token;
-        const hanokIdx = req.params.hanokIdx;
-        await hanokService.postHanokReservation(hanokIdx, userIdx);
-        response(res, returnCode.CREATED, '한옥 예약 성공');
+        if (decode == -2) {
+            errResponse(res, returnCode.NOT_FOUND, '토큰 값 오류');
+        } else {
+            let decode = verify(req.headers.authorization);
+            const userIdx = decode.idx;
+            const hanokIdx = req.params.hanokIdx;
+            const hanokResponse = await hanokService.postHanokReservation(hanokIdx, userIdx);
+            if (hanokResponse) {
+                response(res, returnCode.CREATED, '한옥 예약 성공');
+            } else {
+                response(res, returnCode.NO_CONTENT, '이미 신청한 예약입니다');
+            }
+        }
     } catch (error) {
         console.log(error.message);
         errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '한옥 예약 오류')
     }
 }
 
+//테스트용 토큰 생성기
+async function tokenGenerator(req, res) {
+    const tokenData = await sign(req.params.userIdx);
+    console.log(tokenData);
+    response(res, returnCode.OK, '토큰 발급 성공', tokenData);
+} 
+
 module.exports = {
-    getHanokMapList, getHanokDetail, postHanokReservation 
+    getHanokMapList, getHanokDetail, postHanokReservation, tokenGenerator 
 }

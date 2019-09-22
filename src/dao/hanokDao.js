@@ -27,6 +27,7 @@ async function selectHanokImage(hanokIdx) {
 
 async function postHanokReservation(reserveJson) {
     const postSql = `INSERT INTO hanok_reservation(userIdx, hanokIdx, state) VALUES (?, ?, ?)`
+    
     return await mysql.query(postSql, [reserveJson.userIdx, reserveJson.hanokIdx, reserveJson.state]);
 }
 

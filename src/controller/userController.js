@@ -3,6 +3,7 @@ const returnCode = require('../library/returnCode')
 
 const { sign } = require('../library/jwt');
 const userService = require('../service/userService');
+const reservationService = require('../service/reservationService');
 
 async function postUserSignup(req, res) {
     try {
@@ -45,8 +46,37 @@ async function postUserSignin(req, res) {
     }
 }
 
+async function getStamp(req, res) {
+    try {
+        const stampList = await reservationService.getStamp(req.user.idx);
+        response(res, returnCode.OK, '스템프 가져오기 성공', stampList);
+    } catch (error) {
+        console.log(error.message);
+        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '스탬프 가져오기 에러');
+    }
+}
+
+async function getReservation(req, res) {
+    try {
+        if (req.query.type == 'hanok') {
+            const hanokReservation = await reservationService.getHanokReservationList(req.user.idx);
+            response(res, returnCode.OK, '예약:한옥 가져오기 성공', hanokReservation);
+        } else if (req.query.type == 'class') {
+
+        } else {
+            errResponse(res, returnCode.BAD_REQUEST, '잘못된 예약 타입 입니다');
+        }
+    } catch (error) {
+        console.log(error.message);
+        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '예약 조회 에러');
+    }
+
+}
+
 module.exports = {
     postUserSignup,
     getIdCheck,
     postUserSignin,
+    getStamp,
+    getReservation,
 }

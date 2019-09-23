@@ -27,7 +27,7 @@ async function selectHanokImage(hanokIdx) {
 
 async function postHanokReservation(reserveJson) {
     const postSql = `INSERT INTO hanok_reservation(userIdx, hanokIdx, state) VALUES (?, ?, ?)`
-    
+
     return await mysql.query(postSql, [reserveJson.userIdx, reserveJson.hanokIdx, reserveJson.state]);
 }
 
@@ -42,6 +42,14 @@ async function hanokReservationDelete(reserveJson) {
     return await mysql.query(deleteSql, [reserveJson.userIdx, reserveJson.hanokIdx]);
 }
 
+async function selectHanokUrl(url) {
+    const selectSql = `SELECT hanokIdx
+    FROM hanok
+    WHERE url = ?`;
+
+    return await mysql.query(selectSql, [url]);
+}
+
 module.exports = {
     selectAllHanok,
     selectAllHanokList,
@@ -50,5 +58,6 @@ module.exports = {
     selectHanokImage,
     postHanokReservation,
     selectHanokReservation,
-    hanokReservationDelete
+    hanokReservationDelete,
+    selectHanokUrl,
 }

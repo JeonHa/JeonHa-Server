@@ -56,25 +56,27 @@ async function getStamp(req, res) {
     }
 }
 
-async function getHanokReservation(req, res) {
+async function getReservation(req, res) {
     try {
-        const hanokReservation = await reservationService.getHanokReservationList(req.user.idx);
-        response(res, returnCode.OK, '예약:한옥 가져오기 성공', hanokReservation);
+        if (req.query.type == 'hanok') {
+            const hanokReservation = await reservationService.getHanokReservationList(req.user.idx);
+            response(res, returnCode.OK, '예약:한옥 가져오기 성공', hanokReservation);
+        } else if (req.query.type == 'class') {
+
+        } else {
+            errResponse(res, returnCode.BAD_REQUEST, '잘못된 예약 타입 입니다');
+        }
     } catch (error) {
         console.log(error.message);
-        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '예약:한옥 가져오기 에러');
+        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '예약 조회 에러');
     }
 
 }
-
-// async function getClassReservation(req, res) {
-
-// }
 
 module.exports = {
     postUserSignup,
     getIdCheck,
     postUserSignin,
     getStamp,
-    getHanokReservation
+    getReservation,
 }

@@ -12,9 +12,7 @@ router.post('/signup', userController.postUserSignup);
 router.get('/check', userController.getIdCheck);
 // 스탬프 확인
 router.get('/stamp', authCheck, userController.getStamp);
-// 한옥 예약 확인
-router.get('/hanok', authCheck, userController.getHanokReservation);
-// // 클래스 예약 확인
-// router.get('/class', authCheck, userController.getClassReservation);
+// 한옥 / 전통 클래스 예약 확인
+router.get('/reservation', authCheck, userController.getReservation);
 
 module.exports = router;

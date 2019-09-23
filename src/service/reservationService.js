@@ -18,7 +18,12 @@ async function getHanokReservationList(userIdx) {
         delete hanokList[i].longitude;
     }
 
-    return hanokList;
+    const hanokReservation = {
+        'totalCnt': hanokList.length,
+        'list': hanokList
+    }
+
+    return hanokReservation;
 }
 
 // async function getClassReservationList(userIdx) {

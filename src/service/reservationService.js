@@ -29,7 +29,24 @@ async function getStamp(userIdx) {
     return await reservationDao.selectReservationStamp(userIdx);
 }
 
+async function postStamp(userIdx, url) {
+    const urlType = (await reservationDao.selectUrl(url))[0];
+    console.log(urlType)
+
+    const reservationInfo = {
+        'userIdx': userIdx
+    }
+    if (urlType.type == 1) { // 한옥일 때
+        reservationInfo['hanokIdx'] = urlType.homeIdx;
+        return await reservationDao.updateHanokReservationState(reservationInfo);
+    } else { // 클래스일 때
+        reservationInfo['classIdx'] = urlType.homeIdx;
+        return await reservationDao.updateClassReservationState(reservationInfo);
+    }
+}
+
 module.exports = {
     getHanokReservationList,
     getStamp,
+    postStamp,
 }

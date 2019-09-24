@@ -7,11 +7,17 @@ async function getHanokMap() {
 }
 
 async function getHanokList(sortType) {
+    const sortList = ['', '마포구', '시청일대', '동대문주변', '강남', '신촌 · 홍대 일대', '고궁일대', '용산 · 여의도', 
+    '잠실', '그 외 지역', '외국인관광 도시민박업', '한옥체험업'];
     let allHanok;
-    if (sortType == undefined) {
+    if (sortList[Number(sortType)] == '' || sortList[Number(sortType)] == undefined) {
         allHanok = await hanokDao.selectAllHanokList();
     } else {
-        allHanok = await hanokDao.selectAllHanokList(); //sortType으로 바꿔줘야 함
+        if(sortType < 10) {
+            allHanok = await hanokDao.selectPlaceSortedHanokList(sortList[Number(sortType)]);
+        } else {
+            allHanok = await hanokDao.selectTypeSortedHanokList(sortList[Number(sortType)]);
+        }
     }
     const allHanokImage = await hanokDao.selectAllHanokImage();
     let hanokData = [];
@@ -31,6 +37,7 @@ async function getHanokList(sortType) {
 async function getHanokDetail(hanokIdx) {
     const hanokDetail = await hanokDao.selectHanok(hanokIdx);
     const hanokImage = await hanokDao.selectHanokImage(hanokIdx);
+    const hanokRoom = await hanokDao.selectHanokRoom(hanokIdx);
     let hanokInverted = {
         hanokIdx: hanokDetail[0].hanokIdx,
         name: hanokDetail[0].name,
@@ -39,7 +46,8 @@ async function getHanokDetail(hanokIdx) {
         detail: hanokDetail[0].detail,
         option: hanokDetail[0].option,
         transport: hanokDetail[0].transport,
-        img: hanokImage
+        img: hanokImage,
+        rooms : hanokRoom
     };
     console.log(hanokInverted);
     return hanokInverted;

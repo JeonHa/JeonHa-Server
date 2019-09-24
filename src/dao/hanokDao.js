@@ -6,8 +6,18 @@ async function selectAllHanok() {
 }
 
 async function selectAllHanokList() {
-    const selectSql = `SELECT hanokIdx, name, place, address FROM hanok`;
+    const selectSql = `SELECT hanokIdx, name, type, place, address FROM hanok`;
     return await mysql.query(selectSql);
+}
+
+async function selectPlaceSortedHanokList(hanokPlace) {
+    const selectSql = `SELECT hanokIdx, name, type, place, address FROM hanok WHERE place = ?`;
+    return await mysql.query(selectSql, [hanokPlace]);
+}
+
+async function selectTypeSortedHanokList(hanokType) {
+    const selectSql = `SELECT hanokIdx, name, type, place, address FROM hanok WHERE type = ?`;
+    return await mysql.query(selectSql, [hanokType]);
 }
 
 async function selectAllHanokImage() {
@@ -25,6 +35,11 @@ async function selectHanokImage(hanokIdx) {
     return await mysql.query(selectSql, [Number(hanokIdx)]);
 }
 
+async function selectHanokRoom(hanokIdx) {
+    const selectSql = `SELECT type, persons, rooms FROM room_info WHERE hanokIdx = ?`;
+    return await mysql.query(selectSql, [hanokIdx]);
+}
+
 async function postHanokReservation(reserveJson) {
     const postSql = `INSERT INTO hanok_reservation(userIdx, hanokIdx, state) VALUES (?, ?, ?)`
 
@@ -35,7 +50,7 @@ async function selectHanokReservation(reserveJson) {
     const selectSql = `SELECT * FROM hanok_reservation WHERE userIdx = ? AND hanokIdx = ?`
     return await mysql.query(selectSql, [reserveJson.userIdx, reserveJson.hanokIdx]);
 }
-
+ 
 //테스트용 예약 삭제
 async function hanokReservationDelete(reserveJson) {
     const deleteSql = `DELETE FROM hanok_reservation WHERE userIdx = ? AND hanokIdx = ?`;
@@ -53,9 +68,12 @@ async function selectHanokUrl(url) {
 module.exports = {
     selectAllHanok,
     selectAllHanokList,
+    selectPlaceSortedHanokList,
+    selectTypeSortedHanokList,
     selectAllHanokImage,
     selectHanok,
     selectHanokImage,
+    selectHanokRoom,
     postHanokReservation,
     selectHanokReservation,
     hanokReservationDelete,

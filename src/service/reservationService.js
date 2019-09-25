@@ -1,9 +1,9 @@
 const reservationDao = require('../dao/reservationDao');
 const hanokDao = require('../dao/hanokDao');
+const classDao = require('../dao/classDao');
 
 async function getHanokReservationList(userIdx) {
     const hanokIdxs = await reservationDao.selectHanokReservation(userIdx);
-    console.log(hanokIdxs)
     const hanokList = []
 
     for (let i = 0; i < hanokIdxs.length; i++) {
@@ -26,9 +26,22 @@ async function getHanokReservationList(userIdx) {
     return hanokReservation;
 }
 
-// async function getClassReservationList(userIdx) {
+async function getClassReservationList(userIdx) {
+    const classList = await classDao.selectReservationClass(userIdx);
 
-// }
+
+    for (let i = 0; i < classList.length; i++) {
+        classList['thumnail'] = await classDao.selectClassThumnail(classList[i].classIdx);
+    }
+
+    const classReservation = {
+        'totalCnt': classList.length,
+        'list': classList
+    }
+
+    return classReservation;
+
+}
 
 async function getStamp(userIdx) {
     return await reservationDao.selectReservationStamp(userIdx);
@@ -54,4 +67,5 @@ module.exports = {
     getHanokReservationList,
     getStamp,
     postStamp,
+    getClassReservationList,
 }

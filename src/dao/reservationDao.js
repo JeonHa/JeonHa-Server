@@ -1,9 +1,10 @@
 const mysql = require('../library/mysql');
 
 async function selectHanokReservation(userIdx) {
-    const selectSql = `SELECT hanokIdx, writetime 
-    FROM hanok_reservation
-    WHERE userIdx = ?
+    const selectSql = `SELECT h.hanokIdx, name, type, place, address, writetime
+    FROM hanok AS h
+    JOIN hanok_reservation AS hr
+    ON h.hanokIdx = hr.hanokIdx AND hr.userIdx = ?
     ORDER BY writetime DESC`;
 
     return await mysql.query(selectSql, [userIdx])
@@ -58,6 +59,8 @@ async function selectUrl(url) {
 
     return await mysql.query(selectSql, [url]);
 }
+
+
 
 module.exports = {
     selectHanokReservation,

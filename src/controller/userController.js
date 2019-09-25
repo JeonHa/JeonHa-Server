@@ -71,7 +71,18 @@ async function getReservation(req, res) {
         console.log(error.message);
         errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '예약 조회 에러');
     }
+}
 
+async function getMain(req, res) {
+    try {
+        console.log(req.user);
+
+        const list = await reservationService.getAllReservationSummary(req.user.idx);
+        response(res, returnCode.OK, '메인 화면 조회', list)
+    } catch (error) {
+        console.log(error.message);
+        errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '메인 화면 조회 에러');
+    }
 }
 
 module.exports = {
@@ -80,4 +91,5 @@ module.exports = {
     postUserSignin,
     getStamp,
     getReservation,
+    getMain,
 }

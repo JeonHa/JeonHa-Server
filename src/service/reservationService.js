@@ -3,19 +3,10 @@ const hanokDao = require('../dao/hanokDao');
 const classDao = require('../dao/classDao');
 
 async function getHanokReservationList(userIdx) {
-    const hanokIdxs = await reservationDao.selectHanokReservation(userIdx);
-    const hanokList = []
+    const hanokList = await reservationDao.selectHanokReservation(userIdx);
 
-    for (let i = 0; i < hanokIdxs.length; i++) {
-        let idx = hanokIdxs[i].hanokIdx;
-
-        hanokList[i] = (await hanokDao.selectHanok(idx))[0];
-        hanokList[i]['thumnail'] = (await hanokDao.selectAllHanokImage(idx))[0].img;
-        delete hanokList[i].detail;
-        delete hanokList[i].option;
-        delete hanokList[i].transport;
-        delete hanokList[i].latitude;
-        delete hanokList[i].longitude;
+    for (let i = 0; i < hanokList.length; i++) {
+        hanokList[i]['thumnail'] = (await hanokDao.selectAllHanokImage(hanokList[i].hanokIdx))[0].img;
     }
 
     const hanokReservation = {
@@ -31,7 +22,7 @@ async function getClassReservationList(userIdx) {
 
 
     for (let i = 0; i < classList.length; i++) {
-        classList['thumnail'] = await classDao.selectClassThumnail(classList[i].classIdx);
+        classList[i]['thumnail'] = (await classDao.selectClassThumnail(classList[i].classIdx))[0].img;
     }
 
     const classReservation = {
@@ -63,9 +54,23 @@ async function postStamp(userIdx, url) {
     }
 }
 
+async function getAllReservationSummary(userIdx) {
+    const list = {
+        'hanokList': [],
+        'classList': []
+    }
+
+    if (userIdx != null) {
+        list.hanokList = (await getHanokReservationList(userIdx)).list;
+        list.classList = (await getClassReservationList(userIdx)).list;
+    }
+    return list;
+}
+
 module.exports = {
     getHanokReservationList,
     getStamp,
     postStamp,
     getClassReservationList,
+    getAllReservationSummary,
 }

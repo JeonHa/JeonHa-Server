@@ -59,9 +59,28 @@ function managerCheck(req, res, next) {
     }
 }
 
+function isLogin(req, res, next) {
+    const { authorization } = req.headers;
+
+    if (authorization == undefined) {
+        req.user = {
+            'idx': null
+        }
+    } else {
+        try {
+            req.user = jwt.verify(authorization, jwtConfig.secretKey);
+
+            next();
+        } catch (error) {
+            errResponse(res, returnCode.UNAUTHORIZED, error.message)
+        }
+    }
+}
+
 module.exports = {
     sign,
     verify,
     authCheck,
     managerCheck,
+    isLogin,
 }

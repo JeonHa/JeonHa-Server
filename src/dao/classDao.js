@@ -63,6 +63,30 @@ async function selectClassThumnail(classIdx) {
     return await mysql.query(selectSql, [classIdx]);
 }
 
+async function selectAllClass() {
+    const selectSql = `SELECT c.classIdx, name, weekday, time
+    FROM class AS c
+    JOIN class_weekday AS cw
+    ON c.classIdx = cw.classIdx
+    ORDER BY c.classIdx`;
+
+    return await mysql.query(selectSql);
+}
+
+async function selectClassByWeekday(weekday) {
+    const selectSql = `SELECT c.classIdx, name, weekday, time
+    FROM class AS c
+    JOIN class_weekday AS cw
+    ON c.classIdx = cw.classIdx
+    JOIN (SELECT classIdx
+        FROM class_weekday
+        WHERE weekday = ?) AS cw_detail
+    ON cw_detail.classIdx = c.classIdx
+    ORDER BY c.classIdx`;
+
+    return await mysql.query(selectSql, [weekday]);
+}
+
 module.exports = {
     selectClass,
     selectClassByIdx,
@@ -72,4 +96,6 @@ module.exports = {
     insertClassReservation,
     selectReservationClass,
     selectClassThumnail,
+    selectAllClass,
+    selectClassByWeekday,
 }

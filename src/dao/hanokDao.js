@@ -1,7 +1,7 @@
 const mysql = require('../library/mysql');
 
 async function selectAllHanok() {
-    const selectSql = `SELECT hanokIdx, name, latitude, longitude, place FROM hanok`;
+    const selectSql = `SELECT hanokIdx, name, latitude, longitude, type, place FROM hanok`;
     return await mysql.query(selectSql);
 }
 

@@ -30,7 +30,7 @@ async function updateHanokReservationState(reservationInfo) {
 async function updateClassReservationState(reservationInfo) {
     const updateSql = `UPDATE class_reservation
     SET state = 1, checktime = NOW()
-    WHERE userIdx = ? AND classIdx = ?`;
+    WHERE userIdx = ? AND weekIdx = ?`;
 
     return await mysql.query(updateSql, [reservationInfo.userIdx, reservationInfo.classIdx]);
 }
@@ -60,6 +60,29 @@ async function selectUrl(url) {
     return await mysql.query(selectSql, [url]);
 }
 
+async function selectReservationByUserAndHanokIdx(userIdx, hanokIdx) {
+    const selectSql = `SELECT *
+    FROM hanok_reservation
+    WHERE hanokIdx = ?  AND userIdx = ? AND state != 2
+    ORDER BY writetime`;
+
+    return await mysql.query(selectSql, [hanokIdx, userIdx]);
+}
+
+async function selectReservationByUserAndClassIdx(userIdx, classIdx) {
+    const selectSql = `SELECT *
+    FROM class_reservation AS cr
+    JOIN (
+        SELECT weekIdx
+        FROM class_weekday AS cw
+        JOIN class AS c
+        ON cw.classIdx = c.classIdx AND c.classIdx = ?) AS c
+    ON c.weekIdx = cr.weekIdx
+    WHERE cr.userIdx = ?
+    ORDER BY cr.writetime;`;
+
+    return await mysql.query(selectSql, [classIdx, userIdx]);
+}
 
 
 module.exports = {
@@ -69,4 +92,6 @@ module.exports = {
     updateClassReservationState,
     selectReservationStamp,
     selectUrl,
+    selectReservationByUserAndHanokIdx,
+    selectReservationByUserAndClassIdx,
 }

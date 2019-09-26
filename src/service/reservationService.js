@@ -40,17 +40,42 @@ async function getStamp(userIdx) {
 
 async function postStamp(userIdx, url) {
     const urlType = (await reservationDao.selectUrl(url))[0];
-    console.log(urlType)
 
     const reservationInfo = {
         'userIdx': userIdx
     }
+
+    let reservation = null;
+
+    // 매칭된 url이
     if (urlType.type == 1) { // 한옥일 때
-        reservationInfo['hanokIdx'] = urlType.homeIdx;
-        return await reservationDao.updateHanokReservationState(reservationInfo);
+        // 해당 한옥에 대한 예약이 있는지 왁인
+        reservation = await reservationDao.selectReservationByUserAndHanokIdx(userIdx, urlType.homeIdx);
+        console.log(reservation);
+
+        if (reservation.length == 0) {
+            return 400;
+        } else if (reservation[0].checktime == null) { // 해당 한옥에 대한 예약이 있고 확인 전
+            reservationInfo['hanokIdx'] = urlType.homeIdx;
+            return await reservationDao.updateHanokReservationState(reservationInfo);
+        } else if (reservation[0].checktime != null) { // 해당 한옥에 대한 예약이 있고 이미 확인 되었음
+            return 304;
+        } else { // 해당 한옥에 대한 예약이 없음
+            return 400;
+        }
     } else { // 클래스일 때
-        reservationInfo['classIdx'] = urlType.homeIdx;
-        return await reservationDao.updateClassReservationState(reservationInfo);
+        reservation = await reservationDao.selectReservationByUserAndClassIdx(userIdx, urlType.homeIdx);
+
+        if (reservation.length == 0) {
+            return 400;
+        } else if (reservation[0].checktime == null) {
+            reservationInfo['classIdx'] = urlType.homeIdx;
+            return await reservationDao.updateClassReservationState(reservationInfo);
+        } else if (reservation[0].checktime != null) {
+            return 304;
+        } else {
+            return 400;
+        }
     }
 }
 

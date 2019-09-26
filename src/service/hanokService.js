@@ -14,7 +14,32 @@ async function getHanokList(sortType) {
         allHanok = await hanokDao.selectAllHanokList();
     } else {
         if(sortType < 10) {
-            allHanok = await hanokDao.selectPlaceSortedHanokList(sortList[Number(sortType)]);
+            allHanok = [];
+            let sortAddress;
+            if(sortType == 1){
+                sortAddress = ['마포구'];
+            } else if(sortType == 2){
+                sortAddress = ['시청주변', '명동 · 을지로','남대문시장·남산'];  
+            } else if(sortType == 3){
+                sortAddress = ['동대문 시장', '대학로'];
+            } else if(sortType == 4){
+                sortAddress = ['압구정동·청담동', '신사동 가로수길 주변', '강남역 주변', '삼성역 주변', '서초'];
+            } else if(sortType == 5) {
+                sortAddress = ['신촌·이대역 주변', '홍대·상수역 주변'];
+            } else if(sortType == 6) {
+                sortAddress = ['광화문', '청계천·종로', '인사동', '삼청동·북촌'];
+            } else if(sortType == 7){
+                sortAddress = ['이태원', '여의도'];
+            } else if(sortType == 8) {
+                sortAddress = ['잠실', '송파'];
+            } else if(sortType == 9) {
+                sortAddress = ['뚝섬·건대입구역 주변', '김포공항 주변', '사당·동작역 주변', '그 외 지역'];
+            }
+
+            sortAddress.map(async type => {
+                const tempHanok = await hanokDao.selectPlaceSortedHanokList(type)
+                allHanok = allHanok.concat(tempHanok);
+            })
         } else {
             allHanok = await hanokDao.selectTypeSortedHanokList(sortList[Number(sortType)]);
         }

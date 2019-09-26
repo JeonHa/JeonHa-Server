@@ -42,7 +42,7 @@ async function selectReservationStamp(userIdx) {
     ON si.siIdx = 1
     WHERE userIdx = 1 AND state = 1
     UNION 
-    SELECT classIdx AS idx, writetime, img
+    SELECT weekIdx AS idx, writetime, img
     FROM class_reservation 
     JOIN stamp_img AS si
     ON si.siIdx = 2

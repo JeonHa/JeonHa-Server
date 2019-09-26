@@ -5,6 +5,6 @@ const { authCheck } = require('../library/jwt')
 const qrController = require('../controller/qrController')
 
 // qr 확인
-router.post('/:url', authCheck, qrController.postStamp);
+router.post('/', authCheck, qrController.postStamp);
 
 module.exports = router;

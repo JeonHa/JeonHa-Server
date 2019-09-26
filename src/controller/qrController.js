@@ -5,7 +5,7 @@ const reservationService = require('../service/reservationService');
 
 async function postStamp(req, res) {
     try {
-        await reservationService.postStamp(req.user.idx, req.params.url);
+        await reservationService.postStamp(req.user.idx, req.body.url);
         response(res, returnCode.CREATED, '스탬프 등록 성공');
     } catch (error) {
         console.log(error.message);

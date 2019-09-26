@@ -1,12 +1,5 @@
 const mysql = require('../library/mysql');
 
-
-async function selectClass() {
-    const selectSql = `SELECT * FROM class`;
-
-    return await mysql.query(selectSql);
-}
-
 async function selectClassByIdx(classIdx) {
     const selectSql = `SELECT * FROM class WHERE classIdx = ?`;
 
@@ -64,17 +57,17 @@ async function selectClassThumnail(classIdx) {
 }
 
 async function selectAllClass() {
-    const selectSql = `SELECT c.classIdx, name, weekday, time
+    const selectSql = `SELECT c.classIdx, name, weekday, time, weekIdx
     FROM class AS c
     JOIN class_weekday AS cw
     ON c.classIdx = cw.classIdx
-    ORDER BY c.classIdx`;
+    ORDER BY c.classIdx, weekIdx`;
 
     return await mysql.query(selectSql);
 }
 
 async function selectClassByWeekday(weekday) {
-    const selectSql = `SELECT c.classIdx, name, weekday, time
+    const selectSql = `SELECT c.classIdx, name, weekday, time, weekIdx
     FROM class AS c
     JOIN class_weekday AS cw
     ON c.classIdx = cw.classIdx
@@ -82,13 +75,20 @@ async function selectClassByWeekday(weekday) {
         FROM class_weekday
         WHERE weekday = ?) AS cw_detail
     ON cw_detail.classIdx = c.classIdx
-    ORDER BY c.classIdx`;
+    ORDER BY c.classIdx, weekIdx`;
 
-    return await mysql.query(selectSql, [weekday]);
+    return await mysql.query(selectSql, [weekday])
+}
+
+async function selectWeekdayByClassIdx(classIdx) {
+    const selectSql = `SELECT * FROM class_weekday
+    WHERE classIdx = ?
+    ORDER BY weekIdx`;
+
+    return await mysql.query(selectSql, [classIdx])
 }
 
 module.exports = {
-    selectClass,
     selectClassByIdx,
     selectClassImg,
     selectClassImgByIdx,
@@ -98,4 +98,5 @@ module.exports = {
     selectClassThumnail,
     selectAllClass,
     selectClassByWeekday,
+    selectWeekdayByClassIdx
 }

@@ -1,8 +1,34 @@
 const classDao = require('../dao/classDao');
 
-async function getClassList() {
+async function getClassList(day) {
 
-    const allClass = await classDao.selectClass();
+    let allClass
+
+    const dayList = ['', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
+
+    if (dayList[Number(day)] == '' || dayList[Number(day)] == undefined) {
+        allClass = await classDao.selectAllClass();
+    } else {
+        allClass = await classDao.selectClassByWeekday(dayList[Number(day)]);
+    }
+
+    //요일 묶어주기
+    let listSize = allClass.length;
+
+    for(let i = 0, j=0; i<listSize-j; ){
+        if(allClass[i+1] == undefined){
+            break;
+        } else if(allClass[i].classIdx == allClass[i+1].classIdx){
+            allClass[i].weekday = allClass[i].weekday + " " + allClass[i+1].weekday;
+
+            allClass = allClass.slice(0,i+1).concat(allClass.slice(i+2));
+
+            j++
+        } else {
+            i++;
+        }
+    }
+
     const classImg = await classDao.selectClassImg();
 
     let classList = [];
@@ -15,6 +41,7 @@ async function getClassList() {
                 break;
             }
         }
+
         classList.push(classData);
     })
 
@@ -24,6 +51,7 @@ async function getClassList() {
 async function getClassDetail(classIdx) {
     const classDetail = await classDao.selectClassByIdx(classIdx);
     const classImg = await classDao.selectClassImgByIdx(classIdx);
+    const classSchedule = await classDao.selectWeekdayByClassIdx(classIdx);
 
     let classInverted = {
         classIdx: classDetail[0].classIdx,
@@ -33,7 +61,8 @@ async function getClassDetail(classIdx) {
         detail: classDetail[0].detail,
         option: classDetail[0].option,
         transport: classDetail[0].transport,
-        img: classImg
+        img: classImg,
+        schedule: classSchedule
     };
 
     return classInverted;

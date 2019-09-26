@@ -5,7 +5,7 @@ const classService = require('../service/classService');
 
 async function getClassList(req, res) {
     try {
-        const classList = await classService.getClassList();
+        const classList = await classService.getClassList(req.body.day);
 
         response(res, returnCode.OK, '클래스 리스트 성공', classList);
 

@@ -15,7 +15,16 @@ async function selectUserById(id) {
     return await mysql.query(selectSql, [id])
 }
 
+async function selectUserInfoByIdx(idx) {
+    const selectSql = `SELECT *
+    FROM user
+    WHERE userIdx = ?`;
+
+    return await mysql.query(selectSql, [idx]);
+}
+
 module.exports = {
     insertUser,
     selectUserById,
+    selectUserInfoByIdx,
 }

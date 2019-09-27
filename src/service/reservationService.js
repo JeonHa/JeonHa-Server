@@ -1,6 +1,7 @@
 const reservationDao = require('../dao/reservationDao');
 const hanokDao = require('../dao/hanokDao');
 const classDao = require('../dao/classDao');
+const userDao = require('../dao/userDao');
 
 async function getHanokReservationList(userIdx) {
     const hanokList = await reservationDao.selectHanokReservation(userIdx);
@@ -35,7 +36,9 @@ async function getClassReservationList(userIdx) {
 }
 
 async function getStamp(userIdx) {
-    return await reservationDao.selectReservationStamp(userIdx);
+    const userName = (await userDao.selectUserInfoByIdx(userIdx))[0].name;
+    const stampList = await reservationDao.selectReservationStamp(userIdx)
+    return { 'userName': userName, 'stampList': stampList }
 }
 
 async function postStamp(userIdx, url) {

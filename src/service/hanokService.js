@@ -68,6 +68,8 @@ async function getHanokDetail(hanokIdx) {
         name: hanokDetail[0].name,
         type : hanokDetail[0].type,
         place: hanokDetail[0].place,
+        latitude : hanokDetail[0].latitude,
+        longitude : hanokDetail[0].longitude,
         address: hanokDetail[0].address,
         detail: hanokDetail[0].detail,
         option: hanokDetail[0].option,

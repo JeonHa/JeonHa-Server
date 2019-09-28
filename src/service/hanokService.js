@@ -66,6 +66,7 @@ async function getHanokDetail(hanokIdx) {
     let hanokInverted = {
         hanokIdx: hanokDetail[0].hanokIdx,
         name: hanokDetail[0].name,
+        type : hanokDetail[0].type,
         place: hanokDetail[0].place,
         address: hanokDetail[0].address,
         detail: hanokDetail[0].detail,

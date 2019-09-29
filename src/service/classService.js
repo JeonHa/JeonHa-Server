@@ -19,7 +19,12 @@ async function getClassList(day) {
         if(allClass[i+1] == undefined){
             break;
         } else if(allClass[i].classIdx == allClass[i+1].classIdx){
-            allClass[i].weekday = allClass[i].weekday + " " + allClass[i+1].weekday;
+
+            let weekdayArray = allClass[i].weekday.split(' ');
+            
+            if(weekdayArray[weekdayArray.length-1]!=allClass[i+1].weekday){
+                allClass[i].weekday = allClass[i].weekday + " " + allClass[i+1].weekday;
+            }
 
             allClass = allClass.slice(0,i+1).concat(allClass.slice(i+2));
 

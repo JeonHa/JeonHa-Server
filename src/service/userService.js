@@ -1,7 +1,14 @@
 const userDao = require('../dao/userDao');
 
 async function postUserSignup(userData) {
-    return await userDao.insertUser(userData);
+    const user = await userDao.selectUserById(userData.id);
+    console.log(user);
+
+    if (user.length == 0) {
+        return await userDao.insertUser(userData);
+    } else {
+        return [];
+    }
 }
 
 async function getIdCheck(id) {

@@ -9,7 +9,12 @@ async function postUserSignup(req, res) {
     try {
         const user = await userService.postUserSignup(req.body);
 
-        response(res, returnCode.CREATED, '회원가입 성공', { 'authorization': sign(user.insertId) });
+        if (user.length == 0) {
+            errResponse(res, returnCode.BAD_REQUEST, '이미 있는 아이디입니다');
+        } else {
+            response(res, returnCode.CREATED, '회원가입 성공', { 'authorization': sign(user.insertId) });
+        }
+
     } catch (error) {
         console.log(error.message);
         errResponse(res, returnCode.INTERNAL_SERVER_ERROR, '회원 가입 에러')

@@ -66,13 +66,22 @@ async function selectHanokUrl(url) {
 }
 
 async function selectHanokThumnail(hanokIdx) {
-    const selectUrl = `SELECT *
+    const selectSql = `SELECT *
     FROM hanok_img
     WHERE hanokIdx = ?
     ORDER BY hImgIdx
     LIMIT 1`;
 
-    return await mysql.query(selectUrl, [hanokIdx]);
+    return await mysql.query(selectSql, [hanokIdx]);
+}
+
+async function selectHanokRecommend() {
+    const selectSql = `SELECT hanokIdx, name
+    FROM hanok AS h
+    JOIN recommend AS r
+    ON h.hanokIdx = r.homeIdx AND r.type = 1`;
+
+    return await mysql.query(selectSql);
 }
 
 module.exports = {
@@ -89,4 +98,5 @@ module.exports = {
     hanokReservationDelete,
     selectHanokUrl,
     selectHanokThumnail,
+    selectHanokRecommend,
 }

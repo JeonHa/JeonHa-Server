@@ -82,16 +82,20 @@ async function postStamp(userIdx, url) {
     }
 }
 
-async function getAllReservationSummary(userIdx) {
+async function getRecommendHanokAndClass() {
     const list = {
         'hanokList': [],
         'classList': []
     }
 
-    if (userIdx != null) {
-        list.hanokList = (await getHanokReservationList(userIdx)).list;
-        list.classList = (await getClassReservationList(userIdx)).list;
+    list.hanokList = await hanokDao.selectHanokRecommend();
+    list.classList = await classDao.selectClassRecommend();
+
+    for (let i = 0; i < 5; i++) {
+        list.hanokList[i]['thumnail'] = (await hanokDao.selectHanokThumnail(list.hanokList[i].hanokIdx))[0].img;
+        list.classList[i]['thumnail'] = (await classDao.selectClassThumnail(list.classList[i].classIdx))[0].img;
     }
+
     return list;
 }
 
@@ -100,5 +104,5 @@ module.exports = {
     getStamp,
     postStamp,
     getClassReservationList,
-    getAllReservationSummary,
+    getRecommendHanokAndClass,
 }

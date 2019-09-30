@@ -7,7 +7,7 @@ async function getHanokReservationList(userIdx) {
     const hanokList = await reservationDao.selectHanokReservation(userIdx);
 
     for (let i = 0; i < hanokList.length; i++) {
-        hanokList[i]['thumnail'] = (await hanokDao.selectAllHanokImage(hanokList[i].hanokIdx))[0].img;
+        hanokList[i]['thumnail'] = (await hanokDao.selectHanokThumnail(hanokList[i].hanokIdx))[0].img;
     }
 
     const hanokReservation = {

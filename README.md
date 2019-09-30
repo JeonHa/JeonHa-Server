@@ -9,8 +9,8 @@
 ![license_badge](https://img.shields.io/github/license/JeonHa/JeonHa-Server)
 ![npm_bedge](https://img.shields.io/badge/npm-v6.10.1-blue)
 
-* 프로젝트 기간: 2019.09.18 ~
-* [API](https://github.com/JeonHa/JeonHa-Server/wiki) 
+* 프로젝트 기간: 2019.09.18 ~ 2019.09.30
+* [API 문서](https://github.com/JeonHa/JeonHa-Server/wiki) 
 
 
 
@@ -27,18 +27,20 @@
 ![architecture](https://github.com/JeonHa/JeonHa-Server/blob/master/public/images/architecture.jpg)
 
 
-## 논리적 DB 모델링
+
+## DB ERD
 
 ![ERD](https://github.com/JeonHa/JeonHa-Server/blob/master/public/images/ERD.png)
 
 
 
-## 의존성
+## Depenedncy
 
 ```json
 {
   "dependencies": {
     "cookie-parser": "~1.4.3",
+    "cors": "^2.8.5",
     "debug": "~2.6.9",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
@@ -92,7 +94,7 @@ npm start
 
 
 
-## 사용된 도구
+## 사용된 도구 
 
 * [Node.js](https://nodejs.org/ko/) - Chrome V8 자바스크립트 엔진으로 빌드된 자바스크립트 런타임
 * [Express.js](http://expressjs.com/ko/) - Node.js 웹 애플리케이션 프레임워크
@@ -110,3 +112,9 @@ npm start
 * [이상윤](https://github.com/syndersonLEE)
 
 [기여자 목록](https://github.com/JeonHa/JeonHa-Server/graphs/contributors)을 확인하여 이 프로젝트에 참가하신 분들을 보실 수 있습니다.
+
+
+
+## JeonHa의 연관 프로젝트
+
+* [Android](https://github.com/JeonHa/JeonHa-Android)

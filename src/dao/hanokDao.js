@@ -50,7 +50,7 @@ async function selectHanokReservation(reserveJson) {
     const selectSql = `SELECT * FROM hanok_reservation WHERE userIdx = ? AND hanokIdx = ?`
     return await mysql.query(selectSql, [reserveJson.userIdx, reserveJson.hanokIdx]);
 }
- 
+
 //테스트용 예약 삭제
 async function hanokReservationDelete(reserveJson) {
     const deleteSql = `DELETE FROM hanok_reservation WHERE userIdx = ? AND hanokIdx = ?`;
@@ -63,6 +63,25 @@ async function selectHanokUrl(url) {
     WHERE url = ?`;
 
     return await mysql.query(selectSql, [url]);
+}
+
+async function selectHanokThumnail(hanokIdx) {
+    const selectSql = `SELECT *
+    FROM hanok_img
+    WHERE hanokIdx = ?
+    ORDER BY hImgIdx
+    LIMIT 1`;
+
+    return await mysql.query(selectSql, [hanokIdx]);
+}
+
+async function selectHanokRecommend() {
+    const selectSql = `SELECT hanokIdx, name
+    FROM hanok AS h
+    JOIN recommend AS r
+    ON h.hanokIdx = r.homeIdx AND r.type = 1`;
+
+    return await mysql.query(selectSql);
 }
 
 module.exports = {
@@ -78,4 +97,6 @@ module.exports = {
     selectHanokReservation,
     hanokReservationDelete,
     selectHanokUrl,
+    selectHanokThumnail,
+    selectHanokRecommend,
 }

@@ -88,6 +88,15 @@ async function selectWeekdayByClassIdx(classIdx) {
     return await mysql.query(selectSql, [classIdx])
 }
 
+async function selectClassRecommend() {
+    const selectSql = `SELECT classIdx, name
+    FROM class AS c
+    JOIN recommend AS r
+    ON classIdx = r.homeIdx AND r.type = 2`;
+
+    return await mysql.query(selectSql);
+}
+
 module.exports = {
     selectClassByIdx,
     selectClassImg,
@@ -98,5 +107,6 @@ module.exports = {
     selectClassThumnail,
     selectAllClass,
     selectClassByWeekday,
-    selectWeekdayByClassIdx
+    selectWeekdayByClassIdx,
+    selectClassRecommend,
 }

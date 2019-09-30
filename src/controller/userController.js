@@ -80,7 +80,7 @@ async function getReservation(req, res) {
 
 async function getMain(req, res) {
     try {
-        const list = await reservationService.getAllReservationSummary(req.user.idx);
+        const list = await reservationService.getRecommendHanokAndClass();
         response(res, returnCode.OK, '메인 화면 조회', list)
     } catch (error) {
         console.log(error.message);

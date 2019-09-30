@@ -17,15 +17,19 @@
 
 ## 프로젝트 설명
 
+추후 추가 예정
 
 
+
+
+## Architecture
+
+![architecture](https://github.com/JeonHa/JeonHa-Server/blob/master/public/images/architecture.jpg)
 
 
 ## 논리적 DB 모델링
 
 ![ERD](https://github.com/JeonHa/JeonHa-Server/blob/master/public/images/ERD.png)
-
-
 
 
 

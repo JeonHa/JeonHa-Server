@@ -1,5 +1,5 @@
 const { response, errResponse } = require('../library/response');
-const jwt  = require('../library/jwt');
+const jwt = require('../library/jwt');
 const returnCode = require('../library/returnCode')
 const classService = require('../service/classService');
 
@@ -33,8 +33,8 @@ async function postClassReservation(req, res) {
             errResponse(res, returnCode.NOT_FOUND, '토큰 값 오류');
         } else {
             const userIdx = decode.idx;
-            const classIdx = req.params.classIdx;
-            const classResponse = await classService.postClassReservation(classIdx, userIdx);
+            const weekIdx = req.params.weekIdx;
+            const classResponse = await classService.postClassReservation(weekIdx, userIdx);
             if (classResponse) {
                 response(res, returnCode.CREATED, '클래스 예약 성공');
             } else {

@@ -15,18 +15,18 @@ async function getClassList(day) {
     //요일 묶어주기
     let listSize = allClass.length;
 
-    for(let i = 0, j=0; i<listSize-j; ){
-        if(allClass[i+1] == undefined){
+    for (let i = 0, j = 0; i < listSize - j;) {
+        if (allClass[i + 1] == undefined) {
             break;
-        } else if(allClass[i].classIdx == allClass[i+1].classIdx){
+        } else if (allClass[i].classIdx == allClass[i + 1].classIdx) {
 
             let weekdayArray = allClass[i].weekday.split(' ');
-            
-            if(weekdayArray[weekdayArray.length-1]!=allClass[i+1].weekday){
-                allClass[i].weekday = allClass[i].weekday + " " + allClass[i+1].weekday;
+
+            if (weekdayArray[weekdayArray.length - 1] != allClass[i + 1].weekday) {
+                allClass[i].weekday = allClass[i].weekday + " " + allClass[i + 1].weekday;
             }
 
-            allClass = allClass.slice(0,i+1).concat(allClass.slice(i+2));
+            allClass = allClass.slice(0, i + 1).concat(allClass.slice(i + 2));
 
             j++
         } else {
@@ -40,7 +40,7 @@ async function getClassList(day) {
 
     await allClass.map(data => {
         let classData = data;
-        for(let i = 0; i<classImg.length;i++){
+        for (let i = 0; i < classImg.length; i++) {
             if (data.classIdx == classImg[i].classIdx) {
                 classData.img = classImg[i].img;
                 break;
@@ -73,14 +73,15 @@ async function getClassDetail(classIdx) {
     return classInverted;
 }
 
-async function postClassReservation(classIdx, userIdx) {
+async function postClassReservation(weekIdx, userIdx) {
 
     const reservationInfo = {
         userIdx: Number(userIdx),
-        classIdx: Number(classIdx),
+        weekIdx: Number(weekIdx),
     }
 
     const classReservation = await classDao.selectClassReservationByIdx(reservationInfo);
+    console.log(classReservation);
 
     if (classReservation[0]) {
         return false;

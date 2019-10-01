@@ -19,16 +19,16 @@ async function selectClassImgByIdx(classIdx) {
 }
 
 async function selectClassReservationByIdx(reservationInfo) {
-    const selectSql = `SELECT * FROM class_reservation WHERE classIdx = ? AND userIdx = ?;`;
+    const selectSql = `SELECT * FROM class_reservation WHERE weekIdx = ? AND userIdx = ?;`;
 
-    return await mysql.query(selectSql, [reservationInfo.classIdx, reservationInfo.userIdx])
+    return await mysql.query(selectSql, [reservationInfo.weekIdx, reservationInfo.userIdx])
 }
 
 async function insertClassReservation(reservationInfo) {
-    const insertSql = `INSERT INTO class_reservation (classIdx, userIdx, state) 
-    VALUES (?, ?, 0);`;
+    const insertSql = `INSERT INTO class_reservation (weekIdx, userIdx, state, writetime) 
+    VALUES (?, ?, 0, NOW());`;
 
-    return await mysql.query(insertSql, [reservationInfo.classIdx, reservationInfo.userIdx])
+    return await mysql.query(insertSql, [reservationInfo.weekIdx, reservationInfo.userIdx])
 }
 
 async function selectReservationClass(userIdx) {

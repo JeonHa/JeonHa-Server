@@ -3,7 +3,7 @@ var router = express.Router();
 
 const classController = require('../controller/classController')
 
-router.post('/:classIdx/reservation', classController.postClassReservation);
+router.post('/:weekIdx/reservation', classController.postClassReservation);
 router.get('/:classIdx', classController.getClassDetail);
 router.get('/', classController.getClassList);
 
